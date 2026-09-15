@@ -13,22 +13,46 @@
   "bugs": {
     "url": "https://github.com/SoladLabs/pons-bundler/issues"
   },
-  "bin": {
-    "pons": "./src/cli.ts"
+  "keywords": [
+    "pons",
+    "pons-bundler",
+    "robinhood-chain",
+    "launchandbuy",
+    "snipe-tax",
+    "viem"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
+  "bin": {
+    "pons": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "src/config/config.example.json"
+  ],
   "engines": {
     "node": ">=22"
   },
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "pons": "tsx src/cli.ts",
-    "demo": "tsx src/cli.ts",
-    "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "test": "vitest run"
   },
   "dependencies": {
     "viem": "^2.37.5"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.13",
     "@types/node": "^24.3.0",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
