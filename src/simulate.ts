@@ -1,4 +1,4 @@
-import { BaseError, ContractFunctionRevertedError, type Account, type Hex } from "viem";
+import { type Account, BaseError, ContractFunctionRevertedError, type Hex } from "viem";
 import type { UnsignedTx } from "./addresses.js";
 import { createRobinhoodClient, type RobinhoodClient } from "./client.js";
 import { codeFromRevertName, errorEnvelope } from "./errors.js";

@@ -3,13 +3,13 @@ import { factoryAbi, routerAbi } from "./abi.js";
 import {
   ADDRESSES,
   CHAIN_ID,
-  ZERO_ADDRESS,
   emptySocials,
   type LaunchConfig,
-  type LaunchPhase,
   type LaunchedToken,
+  type LaunchPhase,
   type TokenParams,
   type UnsignedTx,
+  ZERO_ADDRESS,
 } from "./addresses.js";
 import { createRobinhoodClient, type RobinhoodClient } from "./client.js";
 import { PonsbotError } from "./errors.js";
@@ -148,9 +148,7 @@ export async function openLaunchConfigs(
       }),
     ),
   );
-  return configs
-    .map((config, id) => ({ id: BigInt(id), ...config }))
-    .filter((config) => config.enabled);
+  return configs.map((config, id) => ({ id: BigInt(id), ...config })).filter((config) => config.enabled);
 }
 
 export async function getLaunchedToken(
@@ -216,11 +214,9 @@ export async function prepareLaunchAndBuy(
   const pairToken = input.pairToken ?? ZERO_ADDRESS;
   const allowed = await canLaunch(requireAddress(input.launcher, "launcher"), client);
   if (!allowed) {
-    throw new PonsbotError(
-      "NOT_WHITELISTED",
-      "canLaunch(deployer) is false. Public launches are gated; do not send.",
-      { revertName: "NotWhitelisted" },
-    );
+    throw new PonsbotError("NOT_WHITELISTED", "canLaunch(deployer) is false. Public launches are gated; do not send.", {
+      revertName: "NotWhitelisted",
+    });
   }
 
   const [launchFee, expectedEconomics] = await Promise.all([

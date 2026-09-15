@@ -1,10 +1,10 @@
-import { describe, expect, it } from "vitest";
 import { encodeFunctionData } from "viem";
+import { describe, expect, it } from "vitest";
 import { routerAbi } from "../src/abi.js";
 import { ADDRESSES } from "../src/addresses.js";
+import { dryRunNextStep, EDIT_AND_FUND } from "../src/dryrun.js";
 import { PonsbotError } from "../src/errors.js";
 import { buildLaunchAndBuy, nativeLaunchValue } from "../src/launch.js";
-import { dryRunNextStep, EDIT_AND_FUND } from "../src/dryrun.js";
 import { taxMode } from "../src/tax.js";
 import { assertOneWalletDemo } from "../src/validate.js";
 

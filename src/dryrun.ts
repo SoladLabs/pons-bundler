@@ -12,12 +12,9 @@ export function isExamplePlaceholder(launcher: Address): boolean {
   return key === EXAMPLE_PLACEHOLDER.toLowerCase() || key === ZERO_ADDRESS.toLowerCase();
 }
 
-export function dryRunNextStep(input: {
-  ok: boolean;
-  launcher: Address;
-  value: bigint;
-  balance: bigint;
-}): { next: string } {
+export function dryRunNextStep(input: { ok: boolean; launcher: Address; value: bigint; balance: bigint }): {
+  next: string;
+} {
   if (isExamplePlaceholder(input.launcher) || input.balance < input.value) {
     return { next: EDIT_AND_FUND };
   }

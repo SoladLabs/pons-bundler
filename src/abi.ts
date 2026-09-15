@@ -26,6 +26,4 @@ export const routerAbi = parseAbi([
   "error NativeValueMismatch(uint256 supplied, uint256 expected)",
 ]);
 
-export const curveAbi = parseAbi([
-  "function currentSnipeTaxBps(address recipient) view returns (uint256)",
-]);
+export const curveAbi = parseAbi(["function currentSnipeTaxBps(address recipient) view returns (uint256)"]);

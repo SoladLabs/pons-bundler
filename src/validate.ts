@@ -1,6 +1,6 @@
 import type { Address, Hex } from "viem";
 import { getAddress, isAddress, zeroAddress } from "viem";
-import { ZERO_ADDRESS, type TokenParams } from "./addresses.js";
+import { type TokenParams, ZERO_ADDRESS } from "./addresses.js";
 import { PonsbotError } from "./errors.js";
 
 export function requireAddress(value: string, label: string): Address {
