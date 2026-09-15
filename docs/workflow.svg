@@ -1,0 +1,233 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 920" role="img" aria-labelledby="title desc">
+  <title id="title">Pons Bundler Bot workflow on Robinhood Chain</title>
+  <desc id="desc">Architecture and launch flow for the Pons V2 bundler bot: config, factory gate, quote, launchAndBuy, simulate, sign, and Robinhood Chain confirmation.</desc>
+  <rect width="1440" height="920" fill="#07090d"/>
+
+  <defs>
+    <style>
+      .t { font-family: Inter, Segoe UI, Helvetica, Arial, sans-serif; }
+      .lime { fill: #c6ff3d; }
+      .white { fill: #f4f6f8; }
+      .muted { fill: #8b93a0; }
+      .card { fill: #101318; }
+      .line { stroke: #2a3038; }
+    </style>
+  </defs>
+
+  <!-- Header -->
+  <text class="t lime" x="36" y="52" font-size="28" font-weight="700" letter-spacing="1.5">PONS BUNDLER BOT</text>
+  <text class="t muted" x="36" y="80" font-size="14">launchAndBuy coordination for Pons token launches on Robinhood Chain</text>
+
+  <text class="t muted" x="980" y="40" font-size="11" letter-spacing="1.2">ABOUT PONS</text>
+  <text class="t muted" x="980" y="62" font-size="12">Pons is a launch protocol for fixed-supply tokens on</text>
+  <text class="t muted" x="980" y="80" font-size="12">Robinhood Chain. Users sign in their own wallet.</text>
+  <text class="t muted" x="980" y="98" font-size="12">Pons does not custody user assets.</text>
+
+  <circle cx="1378" cy="62" r="26" fill="none" stroke="#c6ff3d" stroke-width="2"/>
+  <text class="t lime" x="1370" y="68" font-size="22" font-weight="700">P</text>
+  <text class="t muted" x="1348" y="108" font-size="9" letter-spacing="1">PONS</text>
+
+  <!-- Capabilities -->
+  <text class="t muted" x="36" y="148" font-size="11" letter-spacing="1.2">CLI CAPABILITIES</text>
+  <g class="t muted" font-size="13">
+    <text x="36" y="176">Factory launch index</text>
+    <text x="36" y="198">canLaunch whitelist gate</text>
+    <text x="36" y="220">Snipe tax readout</text>
+    <text x="36" y="242">launchAndBuy encoding</text>
+    <text x="36" y="264">First-buy quoting</text>
+    <text x="36" y="286">Dry-run simulation</text>
+    <text x="36" y="308">Local --live signing</text>
+  </g>
+
+  <!-- Architecture -->
+  <text class="t muted" x="280" y="148" font-size="11" letter-spacing="1.2">BUNDLER BOT ARCHITECTURE</text>
+
+  <!-- step cards -->
+  <g id="arch">
+    <g transform="translate(280,168)">
+      <rect class="card" width="140" height="168" rx="10"/>
+      <circle cx="70" cy="28" r="16" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="64" y="33" font-size="12">01</text>
+      <text class="t white" x="16" y="62" font-size="12" font-weight="600">CONFIG</text>
+      <text class="t muted" x="16" y="86" font-size="11">Load config.json</text>
+      <text class="t muted" x="16" y="104" font-size="11">Load local .env</text>
+      <text class="t muted" x="16" y="122" font-size="11">Name, symbol, buy</text>
+    </g>
+    <g transform="translate(436,168)">
+      <rect class="card" width="140" height="168" rx="10"/>
+      <circle cx="70" cy="28" r="16" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="64" y="33" font-size="12">02</text>
+      <text class="t white" x="16" y="62" font-size="12" font-weight="600">FACTORY</text>
+      <text class="t muted" x="16" y="86" font-size="11">pons index</text>
+      <text class="t muted" x="16" y="104" font-size="11">canLaunch check</text>
+      <text class="t muted" x="16" y="122" font-size="11">Read launchFee</text>
+    </g>
+    <g transform="translate(592,168)">
+      <rect class="card" width="140" height="168" rx="10"/>
+      <circle cx="70" cy="28" r="16" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="64" y="33" font-size="12">03</text>
+      <text class="t white" x="16" y="62" font-size="12" font-weight="600">QUOTE</text>
+      <text class="t muted" x="16" y="86" font-size="11">Economics preview</text>
+      <text class="t muted" x="16" y="104" font-size="11">minTokensOut</text>
+      <text class="t muted" x="16" y="122" font-size="11">Snipe tax bps</text>
+    </g>
+    <g transform="translate(748,168)">
+      <rect class="card" width="140" height="168" rx="10"/>
+      <circle cx="70" cy="28" r="16" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="64" y="33" font-size="12">04</text>
+      <text class="t white" x="16" y="62" font-size="12" font-weight="600">BUILD</text>
+      <text class="t muted" x="16" y="86" font-size="11">Encode launchAndBuy</text>
+      <text class="t muted" x="16" y="104" font-size="11">value = fee + buy</text>
+      <text class="t muted" x="16" y="122" font-size="11">Recipient exempt</text>
+    </g>
+    <g transform="translate(904,168)">
+      <rect class="card" width="140" height="168" rx="10"/>
+      <circle cx="70" cy="28" r="16" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="64" y="33" font-size="12">05</text>
+      <text class="t white" x="16" y="62" font-size="12" font-weight="600">SIMULATE</text>
+      <text class="t muted" x="16" y="86" font-size="11">Dry-run default</text>
+      <text class="t muted" x="16" y="104" font-size="11">Balance check</text>
+      <text class="t muted" x="16" y="122" font-size="11">Revert decode</text>
+    </g>
+    <g transform="translate(1060,168)">
+      <rect class="card" width="140" height="168" rx="10"/>
+      <circle cx="70" cy="28" r="16" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="64" y="33" font-size="12">06</text>
+      <text class="t white" x="16" y="62" font-size="12" font-weight="600">SIGN</text>
+      <text class="t muted" x="16" y="86" font-size="11">--live flag</text>
+      <text class="t muted" x="16" y="104" font-size="11">Local private key</text>
+      <text class="t muted" x="16" y="122" font-size="11">Wallet client</text>
+    </g>
+    <g transform="translate(1216,168)">
+      <rect class="card" width="188" height="168" rx="10"/>
+      <circle cx="94" cy="28" r="16" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="88" y="33" font-size="12">07</text>
+      <text class="t white" x="16" y="62" font-size="12" font-weight="600">ROBINHOOD CHAIN</text>
+      <text class="t muted" x="16" y="86" font-size="11">Submit to router</text>
+      <text class="t muted" x="16" y="104" font-size="11">Chain id 4663</text>
+      <text class="t muted" x="16" y="122" font-size="11">Return tx hash</text>
+    </g>
+  </g>
+
+  <!-- arrows between arch cards -->
+  <g fill="#c6ff3d">
+    <polygon points="422,252 436,246 436,258"/>
+    <polygon points="578,252 592,246 592,258"/>
+    <polygon points="734,252 748,246 748,258"/>
+    <polygon points="890,252 904,246 904,258"/>
+    <polygon points="1046,252 1060,246 1060,258"/>
+    <polygon points="1202,252 1216,246 1216,258"/>
+  </g>
+
+  <!-- Network + launch flow -->
+  <text class="t muted" x="36" y="380" font-size="11" letter-spacing="1.2">NETWORK</text>
+  <g class="t muted" font-size="13">
+    <text x="36" y="408">Network: Robinhood Chain</text>
+    <text x="36" y="430">Chain ID: 4663</text>
+    <text x="36" y="452">Gas token: ETH</text>
+    <text x="36" y="474">RPC: rpc.mainnet.chain.robinhood.com</text>
+    <text x="36" y="496">Factory: 0x7eD5...C7e</text>
+    <text x="36" y="518">Router: 0xe33E...948</text>
+    <text x="36" y="540">Explorer: robinhoodchain.blockscout.com</text>
+  </g>
+
+  <text class="t muted" x="280" y="380" font-size="11" letter-spacing="1.2">TYPICAL PONS LAUNCH FLOW</text>
+
+  <g>
+    <g transform="translate(280,400)">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="17" y="29" font-size="12">1</text>
+      <text class="t white" x="0" y="62" font-size="11" font-weight="600">PLAN</text>
+      <text class="t muted" x="0" y="80" font-size="11">Edit config.json</text>
+      <text class="t muted" x="0" y="96" font-size="11">Set buy size</text>
+    </g>
+    <g transform="translate(440,400)">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="17" y="29" font-size="12">2</text>
+      <text class="t white" x="0" y="62" font-size="11" font-weight="600">GATE</text>
+      <text class="t muted" x="0" y="80" font-size="11">pons can-launch</text>
+      <text class="t muted" x="0" y="96" font-size="11">Whitelist check</text>
+    </g>
+    <g transform="translate(600,400)">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="17" y="29" font-size="12">3</text>
+      <text class="t white" x="0" y="62" font-size="11" font-weight="600">PREVIEW</text>
+      <text class="t muted" x="0" y="80" font-size="11">pons preview</text>
+      <text class="t muted" x="0" y="96" font-size="11">Unsigned tx</text>
+    </g>
+    <g transform="translate(760,400)">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="17" y="29" font-size="12">4</text>
+      <text class="t white" x="0" y="62" font-size="11" font-weight="600">SIMULATE</text>
+      <text class="t muted" x="0" y="80" font-size="11">pons launch</text>
+      <text class="t muted" x="0" y="96" font-size="11">Dry-run first</text>
+    </g>
+    <g transform="translate(920,400)">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="17" y="29" font-size="12">5</text>
+      <text class="t white" x="0" y="62" font-size="11" font-weight="600">SIGN</text>
+      <text class="t muted" x="0" y="80" font-size="11">pons launch --live</text>
+      <text class="t muted" x="0" y="96" font-size="11">Local key only</text>
+    </g>
+    <g transform="translate(1100,400)">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="17" y="29" font-size="12">6</text>
+      <text class="t white" x="0" y="62" font-size="11" font-weight="600">CONFIRM</text>
+      <text class="t muted" x="0" y="80" font-size="11">Read tx hash</text>
+      <text class="t muted" x="0" y="96" font-size="11">Blockscout</text>
+    </g>
+    <g transform="translate(1260,400)">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="#c6ff3d" stroke-width="1.5"/>
+      <text class="t lime" x="17" y="29" font-size="12">7</text>
+      <text class="t white" x="0" y="62" font-size="11" font-weight="600">TAX</text>
+      <text class="t muted" x="0" y="80" font-size="11">pons tax</text>
+      <text class="t muted" x="0" y="96" font-size="11">Exempt vs wait</text>
+    </g>
+  </g>
+  <g stroke="#c6ff3d" stroke-width="1.4" fill="none">
+    <line x1="328" y1="424" x2="436" y2="424"/>
+    <line x1="488" y1="424" x2="596" y2="424"/>
+    <line x1="648" y1="424" x2="756" y2="424"/>
+    <line x1="808" y1="424" x2="916" y2="424"/>
+    <line x1="968" y1="424" x2="1096" y2="424"/>
+    <line x1="1148" y1="424" x2="1256" y2="424"/>
+  </g>
+
+  <!-- Footer cards -->
+  <rect class="card" x="36" y="580" width="420" height="300" rx="12"/>
+  <text class="t muted" x="56" y="612" font-size="11" letter-spacing="1.2">KEY BENEFITS</text>
+  <g class="t white" font-size="14">
+    <text x="56" y="648">Factory-aware launch quoting</text>
+    <text x="56" y="676">Snipe tax visibility before a buy</text>
+    <text x="56" y="704">Atomic create + first buy</text>
+    <text x="56" y="732">Dry-run by default</text>
+    <text x="56" y="760">Keys stay in local .env</text>
+    <text x="56" y="788">Open-source TypeScript CLI</text>
+  </g>
+
+  <rect class="card" x="472" y="580" width="480" height="300" rx="12"/>
+  <text class="t muted" x="492" y="612" font-size="11" letter-spacing="1.2">IMPORTANT NOTES</text>
+  <g class="t muted" font-size="13">
+    <text x="492" y="648">This repository is a research CLI for Pons V2</text>
+    <text x="492" y="670">on Robinhood Chain. It is unofficial and not</text>
+    <text x="492" y="692">affiliated with Pons or Robinhood.</text>
+    <text x="492" y="726">Public creates revert unless canLaunch is true.</text>
+    <text x="492" y="748">--live spends real Robinhood Chain ETH.</text>
+    <text x="492" y="770">Never paste a private key into a website.</text>
+    <text x="492" y="804">Use this software in line with applicable law</text>
+    <text x="492" y="826">and platform rules.</text>
+  </g>
+
+  <rect class="card" x="968" y="580" width="436" height="300" rx="12"/>
+  <text class="t muted" x="988" y="612" font-size="11" letter-spacing="1.2">RESOURCES</text>
+  <g class="t muted" font-size="13">
+    <text x="988" y="648">Repo: github.com/SoladLabs/pons-bundler</text>
+    <text x="988" y="676">Telegram: t.me/vladmeer67</text>
+    <text x="988" y="704">X: x.com/vladmeer67</text>
+    <text x="988" y="732">Pons: ponsfamily.com</text>
+    <text x="988" y="760">RPC: rpc.mainnet.chain.robinhood.com</text>
+    <text x="988" y="788">Explorer: robinhoodchain.blockscout.com</text>
+  </g>
+  <circle cx="1358" cy="830" r="22" fill="none" stroke="#c6ff3d" stroke-width="2"/>
+  <text class="t lime" x="1351" y="836" font-size="18" font-weight="700">P</text>
+</svg>

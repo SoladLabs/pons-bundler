@@ -14,6 +14,50 @@ Pons V2 applies a decaying snipe tax (`currentSnipeTaxBps`) at the start of a la
 
 Public creates are gated by `canLaunch(deployer)`. Native launches must send `msg.value = launchFee + quoteIn`.
 
+## Workflow
+
+![Pons Bundler Bot architecture and launch flow](docs/workflow.png)
+
+The CLI walks a launch from local config to Robinhood Chain in seven stages: load `src/config/config.json`, gate the deployer with `canLaunch`, quote fees and `minTokensOut`, encode `launchAndBuy`, simulate, optionally sign with `--live`, then confirm on chain.
+
+```mermaid
+flowchart LR
+  A[Config] --> B[Factory]
+  B --> C[Quote]
+  C --> D[Build]
+  D --> E[Simulate]
+  E --> F[Sign]
+  F --> G[Robinhood Chain]
+```
+
+| Stage | Module | What happens |
+| --- | --- | --- |
+| 1. Config | `src/config/config.json`, `.env` | Token metadata, buy size, launcher, recipient |
+| 2. Factory | `src/launch.ts` | `pons index`, `canLaunch`, `launchFee` |
+| 3. Quote | `src/quoting.ts`, `src/tax.ts` | Economics preview, `minTokensOut`, snipe tax bps |
+| 4. Build | `src/launch.ts` | Encode router `launchAndBuy`; `value = launchFee + quoteIn` |
+| 5. Simulate | `src/simulate.ts`, `src/dryrun.ts` | Dry-run from the launcher; decode reverts |
+| 6. Sign | `src/send.ts` | `--live` signs with `PONSBOT_PRIVATE_KEY` on this machine |
+| 7. Chain | Robinhood `4663` | Submit to the router and return the transaction hash |
+
+Typical operator path:
+
+```mermaid
+flowchart LR
+  P[Plan config.json] --> G[can-launch]
+  G --> V[preview]
+  V --> S[launch dry-run]
+  S --> L[launch --live]
+  L --> C[Confirm hash]
+  C --> T[tax readout]
+```
+
+1. Copy [`src/config/config.example.json`](src/config/config.example.json) to `src/config/config.json`, edit it, and fund the launcher.
+2. Run `pons can-launch` for the deployer.
+3. Run `pons preview` to inspect the unsigned `launchAndBuy`.
+4. Run `pons launch` to simulate. Add `--live` only after the dry-run succeeds.
+5. After confirmation, run `pons tax --token --wallet` to compare an exempt recipient with a normal wallet.
+
 ## Requirements
 
 - Node.js 22 or later
@@ -25,18 +69,19 @@ Public creates are gated by `canLaunch(deployer)`. Native launches must send `ms
 ```bash
 git clone https://github.com/SoladLabs/pons-bundler.git
 cd pons-bundler
-pnpm install
-pnpm test
+yarn install
 cp .env.example .env
+cp src/config/config.example.json src/config/config.json
+yarn test
 ```
 
-`npm` and `yarn` are also supported.
+This repository uses Yarn and commits a single `yarn.lock`.
 
-Signing keys stay in the local `.env`. Do not commit `.env` or paste a private key into a website.
+Signing keys stay in the local `.env`. Neither `.env` nor `src/config/config.json` is tracked by git. Do not commit either, and never paste a private key into a website.
 
 ## Configuration
 
-Launch parameters live in [`src/config/config.json`](src/config/config.json). Replace the placeholder addresses before a live send.
+Launch parameters live in `src/config/config.json`, copied from [`src/config/config.example.json`](src/config/config.example.json). Replace the placeholder addresses before a live send.
 
 | Field | Description |
 | --- | --- |
@@ -82,14 +127,14 @@ The default mode is simulation. `--live` spends real Robinhood Chain ETH and wil
 ## Usage
 
 ```bash
-pnpm pons index
-pnpm pons can-launch 0xYourDeployer
+yarn pons index
+yarn pons can-launch 0xYourDeployer
 
-pnpm pons tax --token 0xLaunchedToken --wallet 0xExemptRecipient
-pnpm pons tax --token 0xLaunchedToken --wallet 0xRandomWallet
+yarn pons tax --token 0xLaunchedToken --wallet 0xExemptRecipient
+yarn pons tax --token 0xLaunchedToken --wallet 0xRandomWallet
 
-pnpm pons preview --config src/config/config.json
-pnpm pons launch --config src/config/config.json
+yarn pons preview --config src/config/config.json
+yarn pons launch --config src/config/config.json
 ```
 
 After a successful launch, the named recipient should read **0 bps**. A wallet that was not the buy recipient typically reads **~9900 bps** until the tax decays (about 3 seconds).
@@ -97,12 +142,36 @@ After a successful launch, the named recipient should read **0 bps**. A wallet t
 ## Project structure
 
 ```text
-src/cli.ts             Command-line entry
-src/launch.ts          Factory reads and launchAndBuy encoding
-src/tax.ts             currentSnipeTaxBps helper
-src/quoting.ts         Bonding-curve buy quote
-src/config/config.json Launch parameters
+src/cli.ts          Command-line entry point
+src/index.ts        Public API barrel
+src/addresses.ts    Chain constants and shared types
+src/abi.ts          Factory, router, and curve interfaces
+src/client.ts       Robinhood Chain RPC client
+src/launch.ts       Factory reads and launchAndBuy encoding
+src/quoting.ts      Bonding-curve buy quote (pure)
+src/tax.ts          currentSnipeTaxBps helper
+src/simulate.ts     Transaction simulation and revert decoding
+src/dryrun.ts       Dry-run guidance
+src/send.ts         Local signing and broadcast
+src/validate.ts     Input guards
+src/errors.ts       Typed error codes
+src/config/         Launch parameters (example is tracked)
+tests/              Vitest unit tests
+docs/               Workflow diagram
 ```
+
+## Development
+
+| Script | Purpose |
+| --- | --- |
+| `yarn pons` | Run the CLI from TypeScript sources |
+| `yarn test` | Run the Vitest suite |
+| `yarn typecheck` | Type-check without emitting |
+| `yarn lint` | Check formatting and lint rules |
+| `yarn format` | Apply formatting and safe fixes |
+| `yarn build` | Compile to `dist/` |
+
+Lint, typecheck, test, and build run in CI on Node 22 and 24 (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 
 ## Scope
 

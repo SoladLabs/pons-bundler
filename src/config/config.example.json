@@ -1,0 +1,21 @@
+{
+  "name": "Demo",
+  "symbol": "DEMO",
+  "logo": "",
+  "description": "Pons V2 launch on Robinhood Chain.",
+  "socials": {
+    "twitter": "",
+    "telegram": "",
+    "discord": "",
+    "website": "",
+    "farcaster": ""
+  },
+  "creatorFeeRecipient": "0x0000000000000000000000000000000000000001",
+  "launcher": "0x0000000000000000000000000000000000000001",
+  "creatorTaxBps": 0,
+  "buybackEnabled": true,
+  "launchConfigId": 0,
+  "quoteIn": "1000000000000000",
+  "slippageBps": 50,
+  "recipient": "0x0000000000000000000000000000000000000001"
+}
