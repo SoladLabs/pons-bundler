@@ -1,0 +1,22 @@
+Pons Bundler — Demo / Research License
+Copyright (c) 2026 Dexoryn Labs
+
+This repository is a research and demonstration build for Pons V2 on
+Robinhood Chain.
+
+Published at https://github.com/SoladLabs/pons-bundler
+
+Permission is granted to run this software locally, fork it, and study
+factory indexing, currentSnipeTaxBps, and a one-wallet launchAndBuy.
+
+You may not sell, rebrand, sublicense, or operate this software as a
+commercial bundler, launch desk, Telegram bot, or hosted service without
+a paid license from Dexoryn Labs.
+
+The paid multi-wallet orchestrator, Telegram alerts, and desk presets are
+licensed separately via https://t.me/vladmeer67
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY.

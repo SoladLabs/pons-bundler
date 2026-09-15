@@ -1,0 +1,37 @@
+{
+  "name": "pons-bundler",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pons V2 CLI for Robinhood Chain: factory index, snipe-tax readout, and one-wallet launchAndBuy.",
+  "type": "module",
+  "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://github.com/SoladLabs/pons-bundler#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SoladLabs/pons-bundler.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SoladLabs/pons-bundler/issues"
+  },
+  "bin": {
+    "pons": "./src/cli.ts"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "pons": "tsx src/cli.ts",
+    "demo": "tsx src/cli.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "viem": "^2.37.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
