@@ -123,7 +123,7 @@ function help(): void {
 
 Default is simulate only. --live uses PONSBOT_PRIVATE_KEY from this folder's .env.
 
-One wallet. Extra exempt wallets: https://t.me/vladmeer67
+Extra exempt wallets: https://t.me/vladmeer67
 Unofficial. Not affiliated with Pons or Robinhood.`);
 }
 

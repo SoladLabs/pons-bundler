@@ -2,7 +2,7 @@
   "name": "pons-bundler",
   "version": "0.1.0",
   "private": true,
-  "description": "Pons V2 CLI for Robinhood Chain: factory index, snipe-tax readout, and one-wallet launchAndBuy.",
+  "description": "Pons V2 Bundler Bot for Robinhood Chain. This Pons V2 bundler bot indexes Pons factory launches on Robinhood, quotes the Pons snipe tax, and runs a Robinhood Pons launchAndBuy bundler bot on Robinhood. Robinhood Pons bundler bot for Pons token launches on Robinhood Chain. Unofficial Robinhood Pons bundler bot, not affiliated with Pons or Robinhood.",
   "type": "module",
   "license": "SEE LICENSE IN LICENSE",
   "homepage": "https://github.com/SoladLabs/pons-bundler#readme",

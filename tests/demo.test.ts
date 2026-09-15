@@ -10,7 +10,7 @@ import { assertOneWalletDemo } from "../src/validate.js";
 
 const wallet = "0x0000000000000000000000000000000000000001" as const;
 
-describe("one-wallet demo", () => {
+describe("demo", () => {
   it("tells an unfunded or placeholder dry-run to edit config.json and fund the launcher", () => {
     expect(
       dryRunNextStep({

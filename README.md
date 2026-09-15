@@ -1,6 +1,6 @@
 # Pons Bundler
 
-TypeScript CLI for Pons V2 on [Robinhood Chain](https://www.robinhood.com/). This repository is a research build that indexes factory launch configs, quotes the opening snipe tax, and prepares a single-wallet `launchAndBuy`.
+Pons V2 Bundler Bot for Robinhood Chain. This Pons V2 bundler bot indexes Pons factory launches on Robinhood, quotes the Pons snipe tax, and runs a Robinhood Pons launchAndBuy bundler bot on Robinhood. Robinhood Pons bundler bot for Pons token launches on Robinhood Chain. Unofficial Robinhood Pons bundler bot, not affiliated with Pons or Robinhood.
 
 **Repository:** [github.com/SoladLabs/pons-bundler](https://github.com/SoladLabs/pons-bundler)
 
@@ -10,7 +10,7 @@ This project is unofficial and is not affiliated with Pons or Robinhood.
 
 Pons V2 applies a decaying snipe tax (`currentSnipeTaxBps`) at the start of a launch. A wallet that is not exempt can pay approximately 99% of spend during the first seconds.
 
-`launchAndBuy` creates the token and executes the first buy in one transaction. The buy recipient is auto-exempt (0 bps). This CLI encodes that path for **one wallet**. Extra exemption wallets, funding, and same-block orchestration are not included.
+`launchAndBuy` creates the token and executes the first buy in one transaction. The buy recipient is auto-exempt (0 bps). Extra exemption wallets, funding, and same-block orchestration are available via Telegram.
 
 Public creates are gated by `canLaunch(deployer)`. Native launches must send `msg.value = launchFee + quoteIn`.
 
@@ -74,7 +74,7 @@ pons launch --config src/config/config.json [--live]
 | `index` | List enabled factory launch configs |
 | `can-launch` | Check whether an address is allowed to create |
 | `tax` | Read `currentSnipeTaxBps` and report exempt vs wait |
-| `preview` | Encode an unsigned one-wallet `launchAndBuy` |
+| `preview` | Encode an unsigned `launchAndBuy` |
 | `launch` | Simulate from the launcher; add `--live` to sign locally |
 
 The default mode is simulation. `--live` spends real Robinhood Chain ETH and will revert unless `canLaunch(deployer)` is true.
@@ -106,7 +106,7 @@ src/config/config.json Launch parameters
 
 ## Scope
 
-This repository covers factory indexing, tax readout, and a one-wallet dry-run / optional local send.
+This repository covers factory indexing, tax readout, dry-run, and optional local send.
 
 It does not include extra-wallet generation, funding, fire, or sweep; Telegram automation; hosted signing; or commercial desk presets.
 

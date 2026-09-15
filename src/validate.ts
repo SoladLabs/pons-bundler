@@ -43,7 +43,7 @@ export function assertOneWalletDemo(extraExemptions: readonly string[] | undefin
   if (extraExemptions !== undefined && extraExemptions.length > 0) {
     throw new PonsbotError(
       "INVALID_PARAMS",
-      "This public demo is one-wallet only. Extra exempt wallets, funding, and fire-now orchestration ship in the paid pack: https://t.me/vladmeer67",
+      "Extra exempt wallets, funding, and fire-now orchestration ship in the paid pack: https://t.me/vladmeer67",
     );
   }
 }

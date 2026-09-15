@@ -52,7 +52,7 @@ export function nativeLaunchValue(launchFee: bigint, quoteIn: bigint, pairToken:
   return isNativePair(pairToken) ? launchFee + quoteIn : launchFee;
 }
 
-/** One-wallet demo. Extra exemption slots are not built here. */
+/** Extra exemption slots are not built here. */
 export function buildLaunchAndBuy(input: BuildLaunchAndBuyInput): BuiltLaunchAndBuy {
   const pairToken = input.pairToken ?? ZERO_ADDRESS;
   const recipient = requireAddress(input.recipient, "recipient");
